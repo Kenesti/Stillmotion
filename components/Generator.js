@@ -71,6 +71,35 @@ export default function Generator({ advanced = false }) {
       setProgress(1); setStepLabel("Analyzing image…");
       const a = await analyze();
       if (a) setAnalysis(a);
+
+      // Probe for a configured neural video backend; fall back to the local engine.
+      let remoteUrl = null;
+      try {
+        const fd = new FormData();
+        fd.append("image", file);
+        fd.append("prompt", prompt);
+        fd.append("aspect", aspect);
+        fd.append("resolution", resolution);
+        fd.append("audio", String(audio));
+        const probe = await fetch("/api/generate", { method: "POST", body: fd });
+        if (probe.ok) {
+          const meta = await probe.json();
+          if (meta.mode === "remote" && (meta.provider?.url || meta.provider?.video_url || meta.provider?.download_url)) {
+            remoteUrl = meta.provider.url || meta.provider.video_url || meta.provider.download_url;
+          }
+        }
+      } catch (e) { /* local fallback */ }
+
+      if (remoteUrl) {
+        setProgress(60); setStepLabel("Neural model rendering (remote)…");
+        const out = { url: remoteUrl, width: null, height: null, remote: true };
+        setResult(out);
+        setHistory((h) => [{ url: out.url, prompt, aspect, resolution, date: new Date().toISOString(), remote: true }, ...h].slice(0, 8));
+        setProgress(100); setStepLabel("Done (neural model)");
+        setStatus("done");
+        return;
+      }
+
       const out = await generateVideo({
         imageEl, prompt, aspect, resolution, audio,
         onProgress: (p, label) => { setProgress(p); setStepLabel(label); },
@@ -204,7 +233,7 @@ export default function Generator({ advanced = false }) {
           <>
             <video className="result-video" src={result.url} controls autoPlay loop playsInline />
             <div style={{ display: "flex", gap: 8, marginTop: 14, flexWrap: "wrap", alignItems: "center" }}>
-              <span className="badge badge-green">✓ Generated</span>
+              <span className="badge badge-green">✓ Generated{result.remote ? " · neural model" : ""}</span>
               <span className="badge badge-brand">{aspect}</span>
               <span className="badge badge-brand">{resolution}</span>
               <span className="badge badge-brand">{DURATION}s</span>
