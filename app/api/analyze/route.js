@@ -11,10 +11,10 @@ export async function POST(req) {
       return NextResponse.json({ error: "No image provided" }, { status: 400 });
     }
     const buf = Buffer.from(await file.arrayBuffer());
-    if (buf.length > 12 * 1024 * 1024) {
-      return NextResponse.json({ error: "Image too large (max 12MB)" }, { status: 400 });
+    if (buf.length > 25 * 1024 * 1024) {
+      return NextResponse.json({ error: "Image too large (max 25MB)" }, { status: 400 });
     }
-    const img = sharp(buf, { failOn: "none" });
+    const img = sharp(buf, { failOn: "none", unlimited: true });
     const meta = await img.metadata();
     const stats = await img.stats();
     const { data, info } = await sharp(buf)

@@ -20,10 +20,10 @@ export const metadata = {
 const faqs = [
   { q: "Is this AI image to video generator really free?", a: "Yes — completely free with no hidden costs, no subscription, no credit requirements, and no watermarks. Generate as many 5-second videos as you want." },
   { q: "Do I need to create an account?", a: "No. No sign-up, no email, no personal information. Upload an image, describe the motion, and generate instantly — everything runs in your browser." },
-  { q: "What image formats are supported?", a: "JPG, JPEG, PNG, and WebP. The tool automatically optimizes your input for the best video quality." },
+  { q: "What image formats are supported?", a: "Any image format your browser can read — JPG, PNG, WebP, GIF, AVIF, BMP, SVG and more. The tool automatically optimizes your input for the best video quality." },
   { q: "How long does generation take?", a: "Typically just a few seconds, since the motion engine runs locally in your browser with no queues and no GPU requirement on your side beyond a normal canvas." },
   { q: "Are my images and videos stored on your servers?", a: "No. All processing happens in your browser and nothing is uploaded to or stored on our servers. Your content is deleted when you leave the page." },
-  { q: "What motion can I create?", a: "Camera moves (push-in, zoom-out, pan, orbit, tilt), object motion (waves, wind, rain, fire, mist), atmospheric effects, and character animation like flowing hair — all from a plain-language prompt." },
+  { q: "What motion can I create?", a: "Camera moves (push-in, zoom-out, pan, orbit, tilt), object motion (waves, wind, rain, snow, fire, mist, sparkle), atmospheric effects, and character animation like flowing hair — all from a plain-language prompt. Every clip is rendered as a seamless loop." },
   { q: "Can I use the videos commercially?", a: "Yes — you own the rights to what you create. Just make sure you hold the rights to the original image you upload." },
   { q: "How long are the videos and what resolution?", a: "5 seconds at 720p (1280×720) on the free tool, with 480p–1080p and five aspect ratios in the advanced workspace." },
   { q: "Can I close the page while generating?", a: "No — keep the tab open. Because processing is in-browser for privacy, closing the page interrupts generation." },
@@ -59,8 +59,8 @@ export default function Home() {
         <span className="eyebrow">✨ AI Image to Video</span>
         <h1>Free AI Image to <span className="grad">Video</span> Generator</h1>
         <p className="lead">
-          Use advanced AI technology to add dynamic effects to your images and create
-          stunning video content — free, no login, unlimited.
+          Use advanced AI technology to add dynamic, cinematic motion to any image and create
+          seamless looping video content — free, no login, unlimited.
         </p>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
           <a href="#try" className="btn btn-primary btn-lg">Try It Free Now</a>

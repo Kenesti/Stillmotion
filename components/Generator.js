@@ -30,8 +30,12 @@ export default function Generator({ advanced = false }) {
 
   const handleFile = useCallback((f) => {
     if (!f) return;
-    if (!/image\/(jpeg|png|webp)/.test(f.type)) {
-      setError("Please upload a JPEG, PNG, or WebP image.");
+    if (!/^image\//.test(f.type)) {
+      setError("Please upload an image file (JPG, PNG, WebP, GIF, AVIF, BMP, SVG…).");
+      return;
+    }
+    if (f.size > 25 * 1024 * 1024) {
+      setError("Image too large — max 25MB.");
       return;
     }
     setError("");
@@ -102,12 +106,12 @@ export default function Generator({ advanced = false }) {
             <img src={imgUrl} alt="Source upload" />
           ) : (
             <>
-              <div className="dz-title">Click or drag to upload image</div>
-              <div className="dz-sub">JPEG, PNG, WebP · max 12MB</div>
+              <div className="dz-title">Click or drag to upload any image</div>
+              <div className="dz-sub">JPG, PNG, WebP, GIF, AVIF, BMP, SVG… · max 25MB</div>
             </>
           )}
         </div>
-        <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" hidden
+        <input ref={inputRef} type="file" accept="image/*" hidden
           onChange={(e) => handleFile(e.target.files?.[0])} />
 
         <label className="field-label" htmlFor="prompt">Prompt</label>
